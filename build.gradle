@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.securitybridge'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('libs/py4j-0.10.9.9.jar')
+    implementation 'com.nimbusds:nimbus-jose-jwt:10.7'
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20260102.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['tests/java']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
