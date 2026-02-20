@@ -1,5 +1,7 @@
 # SecurityBridge
 
+[![CI](https://github.com/Bailie-L/SecurityBridge/actions/workflows/ci.yml/badge.svg)](https://github.com/Bailie-L/SecurityBridge/actions/workflows/ci.yml)
+
 A cross-language security framework that bridges Python applications to Java security components via [Py4J](https://www.py4j.org/). Delivers enterprise-grade JWT validation, HTML sanitization, and input validation — with automatic Python fallbacks when the Java gateway is unavailable.
 
 ---
