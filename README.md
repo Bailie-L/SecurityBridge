@@ -39,43 +39,35 @@ A cross-language security framework that bridges Python applications to Java sec
 ---
 
 ## Architecture
-```
-┌──────────────────────────────────────────────────────────┐
-│                  PYTHON APPLICATION                       │
-│  ┌──────────────────────────────────────────────────────┐│
-│  │          security.py (Public Python API)             ││
-│  │   • validate_jwt()    → PyJWT fallback              ││
-│  │   • sanitize_html()   → nh3 fallback                ││
-│  │   • validate_string() → regex fallback              ││
-│  │   • validate_range()  → Python fallback             ││
-│  └────────────────────────┬─────────────────────────────┘│
-│  ┌────────────────────────▼─────────────────────────────┐│
-│  │       security_bridge.py (Py4J Client Singleton)     ││
-│  └────────────────────────┬─────────────────────────────┘│
-└───────────────────────────┼──────────────────────────────┘
-                            │ Py4J (port 25333, auth token)
-┌───────────────────────────┼──────────────────────────────┐
-│                    JAVA GATEWAY                           │
-│  ┌────────────────────────▼─────────────────────────────┐│
-│  │       SecurityGatewayServer (Py4J Entry Point)       ││
-│  └────────────────────────┬─────────────────────────────┘│
-│  ┌────────────────────────▼─────────────────────────────┐│
-│  │            SecurityManager (Singleton)                ││
-│  └──────┬────────┬────────┬────────┬────────────────────┘│
-│  ┌──────▼─────┐  │ ┌──────▼─────┐  │                     │
-│  │JwtValidator│  │ │HtmlSanitizer│ │                     │
-│  │ Nimbus JOSE│  │ │  OWASP lib  │ │                     │
-│  └────────────┘  │ └────────────┘  │                     │
-│  ┌───────────────▼──┐  ┌──────────▼──────┐               │
-│  │ ValidationUtils  │  │ConfigValidator  │               │
-│  └──────────────────┘  └─────────────────┘               │
-│  ┌──────────────────┐                                     │
-│  │   RateLimiter    │                                     │
-│  └──────────────────┘                                     │
-└──────────────────────────────────────────────────────────┘
+
+```mermaid
+graph TD
+    APP[Python Application] --> API[security.py<br/>Public API]
+
+    API --> BRIDGE[security_bridge.py<br/>Py4J Client Singleton]
+    API -.->|Java unavailable| FB[Python Fallbacks<br/>PyJWT / nh3 / regex]
+
+    BRIDGE -->|Py4J — port 25333, auth token| GW[SecurityGatewayServer<br/>Py4J Entry Point]
+
+    GW --> SM[SecurityManager<br/>Singleton]
+
+    SM --> JWT[JwtValidator<br/>Nimbus JOSE+JWT]
+    SM --> HTML[HtmlSanitizer<br/>OWASP]
+    SM --> VU[ValidationUtils<br/>String & Range]
+    SM --> CV[ConfigurationValidator]
+    SM --> RL[RateLimiter<br/>Per-Client]
+
+    style APP fill:#4a9eff,color:#fff
+    style FB fill:#ffa94d,color:#fff
+    style SM fill:#ff6b6b,color:#fff
+    style JWT fill:#69db7c,color:#fff
+    style HTML fill:#69db7c,color:#fff
+    style VU fill:#69db7c,color:#fff
+    style CV fill:#69db7c,color:#fff
+    style RL fill:#69db7c,color:#fff
 ```
 
-When the Java gateway is running, all operations delegate to the JVM for maximum performance and access to enterprise Java libraries. When it's unavailable, Python fallbacks (PyJWT, nh3, regex) provide identical behaviour so the application never breaks.
+When the Java gateway is running, all operations delegate to the JVM for maximum performance and access to enterprise Java libraries. When it is unavailable, Python fallbacks (PyJWT, nh3, regex) provide identical behaviour so the application never breaks.
 
 ---
 
