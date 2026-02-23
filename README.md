@@ -126,7 +126,7 @@ SecurityBridge/
 
 ### 1. Clone and set up
 ```bash
-git clone https://github.com/yourusername/SecurityBridge.git
+git clone https://github.com/Bailie-L/SecurityBridge.git
 cd SecurityBridge
 python -m venv venv
 source venv/bin/activate
