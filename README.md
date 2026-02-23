@@ -100,7 +100,7 @@ SecurityBridge/
 ├── demo/
 │   └── app.py                              # FastAPI demo application
 ├── docs/
-│   └── HANDOVER_V3.md                      # Technical handover document
+│   └── HANDOVER_FINAL.md                    # Technical handover document
 ├── build.gradle
 ├── requirements.txt
 ├── pyproject.toml
