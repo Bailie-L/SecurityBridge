@@ -222,11 +222,11 @@ String clean = sm.validateString(input, "username", "alphanumeric");
 
 ## Test Coverage
 
-| Suite | Files | Tests | Passed | Skipped |
-|-------|-------|-------|--------|---------|
-| Java | 5 | 127 | 127 | 0 |
-| Python | 1 | 81 | 78 | 3 |
-| **Total** | **6** | **208** | **205** | **3** |
+| Suite | Files | Tests | Passed | Failed | Skipped |
+|-------|-------|-------|--------|--------|---------|
+| Java | 5 | 127 | 127 | 0 | 0 |
+| Python | 1 | 81 | 78 | 0 | 3 |
+| **Total** | **6** | **208** | **205** | **0** | **3** |
 
 The 3 Python skips are integration tests that require a running Java gateway (`@pytest.mark.integration`).
 
